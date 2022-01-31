@@ -19,8 +19,12 @@
 // np https://api.openweathermap.org/data/2.5/weather?appid=0ed761300a2725ca778c07831ae64d6e&q=Białystok
 
 const yargs = require("yargs");
+const axios = require("axios");
+
 const args = yargs.argv;
 const userDataModule = require("./user-data");
+const showUserInfoModule = require("./show-user-info");
+const showWeatherInfoModule = require("./show-weather-info");
 
 //parametry wejściowe: np.'--username=esdvska --showFollowers
 (async () => {
@@ -31,22 +35,19 @@ const userDataModule = require("./user-data");
         args.username
       );
 
-      console.log(
-        `Nazwa użytkownika: ${userData.name || "Brak nazwy użytkownika"}
-        Ilość repozytoriów: ${repositoriesData.length} `
-      );
-      if (repositoriesData.length) {
+      //wyświetlenie danych użytkownika
+      showUserInfoModule.showUserInfo(userData, repositoriesData, args);
+
+      //wyświetlenie danych o pogodzie
+      if (userData.location) {
+        showWeatherInfoModule.showWeatherInfo(userData.location);
+      } else {
         console.log(
-          `Nazwy repozytoriów: ${repositoriesData
-            .map((rep) => rep.name)
-            .join(", ")}`
+          "Nie można wyświetlić pogody, użytkownik nie podał lokalizacji"
         );
       }
-      if (args.showFollowers) {
-        console.log(`Ilość obserwatorów: ${userData.followers}`);
-      }
     } catch (err) {
-      console.log("Używkonik nie istnieje");
+      console.log("Użytkownik nie istnieje");
     }
   } else {
     console.log(
