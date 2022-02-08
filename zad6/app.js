@@ -1,12 +1,36 @@
-// Napisz aplikację pozwalającą na przechowywanie w pliku listy zadań do wykonania (klasyczna lista TODO). Aplikacja powinna pozwalać na dodanie do listy nowego zadania, jak również wyświetlić zawartość całej listy. Przy uruchomieniu bez parametrów aplikacja powinna informować o możliwych parametrach wywołania.
+const { argv } = require("yargs");
+const yargs = require("yargs/yargs");
+const appendFileModule = require("./append-file");
+const readFileModule = require("./read-file");
+const path = "todolist.js";
 
-// zapis/odczyt wykonuj asynchronicznie
-// pamiętaj o obsłudze błędów
-// poinformuj użytkownika o poprawności wykonanych operacji
-// wydziel odczyt i zapis informacji do osobnych modułów
-// Sugeruje użyć modułu yargs z konstrukcją yargs.command.
+yargs(process.argv.slice(2))
+  .command({
+    command: "list",
+    aliases: ["lista", "list"],
+    desc: "Wyświetl moją listę TODO",
+    handler: (argv) => {
+      readFileModule.readFile(path);
+    },
+  })
+  .command({
+    command: "add [value]",
+    aliases: ["dodaj", "add"],
+    desc: "Dodaj zadanie do listy TODO",
+    builder: (yargs) =>
+      yargs.default(
+        "value",
+        "Po słowie 'dodaj' podaj zadanie, które chcesz dodać"
+      ),
+    handler: (argv) => {
+      appendFileModule.appendFile(path, argv.value);
+    },
+  }).argv;
 
-// Przykład wywołania programu:
-
-// > node app.js dodaj "napisac program na zaliczenie z NodeJS"
-// > node app.js lista
+if (!argv._[0]) {
+  console.log(
+    `Jeśli chcesz uruchomić aplikację proszę wybierz jedną z dwóch opcji:
+    dodaj 'Twoje zadanie do dodania' - jeśli chcesz dodać zadanie do listy TODO,
+    lista - jeśli chcesz wyświetlić swoją listę TODO`
+  );
+}
