@@ -1,5 +1,6 @@
 const yargs = require("yargs");
 const colors = require("colors");
+
 const args = yargs.argv;
 (() => {
   if (args.rainbow) {

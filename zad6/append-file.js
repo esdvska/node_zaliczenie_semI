@@ -1,5 +1,6 @@
 const fs = require("fs");
 const fsPromises = fs.promises;
+
 const appendFile = async (path, dataToAppend) => {
   try {
     await fsPromises.appendFile(
