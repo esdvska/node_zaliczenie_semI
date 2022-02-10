@@ -15,30 +15,16 @@ const getNumberInfo = async (numFromFile) => {
   return response.data;
 };
 
-const validateJSON = (body) => {
-  try {
-    const data = JSON.parse(body);
-    return data;
-  } catch (err) {
-    // failed to parse
-    console.log("Nieprawidłowy plik.");
-    return null;
-  }
-};
-
 (async () => {
   try {
     const dataFromFilePromise = await fsPromises.readFile(filePath);
-    const dataFromFile = validateJSON(dataFromFilePromise);
-    if (dataFromFile) {
-      if (dataFromFile.number) {
-        const numberInfo = await getNumberInfo(dataFromFile.number);
-        fsPromises.appendFile(filePath, JSON.stringify(numberInfo));
-      } else {
-        console.log("Twój plik nie zawiera numeru.");
-      }
+    const dataFromFile = JSON.parse(dataFromFilePromise);
+    if (dataFromFile.number) {
+      const numberInfo = await getNumberInfo(dataFromFile.number);
+      fsPromises.appendFile(filePath, JSON.stringify(numberInfo));
+    } else {
+      console.log("Twój plik nie zawiera numeru.");
     }
-    return;
   } catch (err) {
     console.error(err);
   }

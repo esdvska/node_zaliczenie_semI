@@ -19,7 +19,6 @@
 // np https://api.openweathermap.org/data/2.5/weather?appid=0ed761300a2725ca778c07831ae64d6e&q=Białystok
 
 const yargs = require("yargs");
-const axios = require("axios");
 
 const args = yargs.argv;
 const userDataModule = require("./user-data");
@@ -28,7 +27,7 @@ const showWeatherInfoModule = require("./show-weather-info");
 
 //parametry wejściowe: np.'--username=esdvska --showFollowers
 (async () => {
-  if (args.username) {
+  if (args.username && args.username.length > 0) {
     try {
       const userData = await userDataModule.getUserData(args.username);
       const repositoriesData = await userDataModule.getUserRepositories(
@@ -47,7 +46,7 @@ const showWeatherInfoModule = require("./show-weather-info");
         );
       }
     } catch (err) {
-      console.log("Użytkownik nie istnieje");
+      console.log(err);
     }
   } else {
     console.log(
