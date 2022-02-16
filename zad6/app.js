@@ -2,7 +2,7 @@ const { argv } = require("yargs");
 const yargs = require("yargs/yargs");
 const appendFileModule = require("./append-file");
 const readFileModule = require("./read-file");
-const path = "todolist.js";
+const path = "todolist.txt";
 
 yargs(process.argv.slice(2))
   .command({
@@ -27,7 +27,7 @@ yargs(process.argv.slice(2))
     },
   }).argv;
 
-if (!argv._[0] || argv != "dodaj" || argv != "lista") {
+if (!argv._[0]) {
   console.log(
     `Jeśli chcesz uruchomić aplikację proszę wybierz jedną z dwóch opcji:
     dodaj 'Twoje zadanie do dodania' - jeśli chcesz dodać zadanie do listy TODO,

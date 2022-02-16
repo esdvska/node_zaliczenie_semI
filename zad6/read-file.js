@@ -5,7 +5,7 @@ const readFile = async (path) => {
   try {
     if (fs.existsSync(path)) {
       console.log(
-        `${(await fsPromises.readFile("todolist.js")).toString()} 
+        `${(await fsPromises.readFile(path)).toString()} 
          --> To już cała Twoja lista TODO <--
         `
       );
